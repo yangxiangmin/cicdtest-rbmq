@@ -1,0 +1,22 @@
+{
+    "service": {
+        "host": "localhost",
+        "port": 8080,
+        "api_endpoints": {
+            "send": "/api/send",
+            "status": "/api/status"
+        }
+    },
+    "test_messages": [
+        {
+            "topic": "system.test1",
+            "message": "Test message 1",
+            "expected_response": "success"
+        },
+        {
+            "topic": "system.test2",
+            "message": "Test message 2",
+            "expected_response": "success"
+        }
+    ]
+}

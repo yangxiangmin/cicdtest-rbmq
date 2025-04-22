@@ -1,0 +1,10 @@
+{
+    "rabbitmq": {
+        "host": "localhost",
+        "port": 5672,
+        "username": "guest",
+        "password": "guest"
+    },
+    "test_topics": ["test.topic1", "test.topic2"],
+    "timeout_ms": 5000
+}
