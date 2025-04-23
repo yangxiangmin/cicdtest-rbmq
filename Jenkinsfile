@@ -36,7 +36,7 @@ pipeline {
                 # 检测操作系统类型
                 if [ -f /etc/os-release ]; then
                     # RedHat/CentOS 系统
-                    sudo yum install -y cmake gcc-c++ openssl-devel
+                    sudo yum install -y cmake gcc-c++ openssl-devel libcurl-devel
 
                     if [ ! -f /usr/local/lib/libgtest.a ] && [ ! -f /usr/local/lib64/libgtest.a ]; then
                         echo "从源码编译安装 gtest..."
@@ -66,7 +66,7 @@ pipeline {
                 elif [ -f /etc/debian_version ]; then
                     # Debian/Ubuntu 系统
                     sudo apt-get update
-                    sudo apt-get install -y cmake g++ librabbitmq-dev libssl-dev libgtest-dev
+                    sudo apt-get install -y cmake g++ librabbitmq-dev libssl-dev libgtest-dev libcurl-devel
                     # 编译安装 gtest
                     cd /usr/src/gtest
                     sudo cmake CMakeLists.txt
