@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # RabbitMQ 服务
+  rabbitmq:
+    image: rabbitmq:3.11-management  # 带Web管理界面的版本
+    container_name: rabbitmq-test
+    hostname: rabbitmq-test
+    ports:
+      - "5672:5672"    # AMQP协议端口
+      - "15672:15672"  # 管理界面端口
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"  # 默认用户名
+      RABBITMQ_DEFAULT_PASS: "guest"  # 默认密码
+      RABBITMQ_DEFAULT_VHOST: "/"     # 虚拟主机
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks:
+      - rabbitmq-net
+
+  # 测试运行器（可选）
+  test-runner:
+    build:
+      context: ../..  # 指向项目根目录
+      dockerfile: test/system/Dockerfile  # 测试容器的Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: "guest"
+      RABBITMQ_PASS: "guest"
+    networks:
+      - rabbitmq-net
+    volumes:
+      - ./test-results:/app/test-results  # 挂载测试结果目录
+
+# 自定义网络
+networks:
+  rabbitmq-net:
+    driver: bridge
