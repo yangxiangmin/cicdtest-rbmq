@@ -4,7 +4,7 @@ pipeline {
     }
     
     environment {
-        RABBITMQ_HOST = 'rabbitmq-test'
+        RABBITMQ_HOST = 'localhost'
         RABBITMQ_PORT = '5672'
         RABBITMQ_USER = 'guest'
         RABBITMQ_PASS = 'guest'
@@ -18,7 +18,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', 
-                    url: 'https://github.com/your-org/rabbitmq-wrapper.git',
+                    url: 'https://github.com/yangxiangmin/cicdtest-rbmq.git',
                     credentialsId: 'github-credentials'
                 
                 // 生成版本信息文件
@@ -34,13 +34,33 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                sudo apt-get update
-                sudo apt-get install -y cmake g++ librabbitmq-dev libssl-dev
-                sudo apt-get install -y libgtest-dev
-                cd /usr/src/gtest
-                sudo cmake CMakeLists.txt
-                sudo make
-                sudo cp *.a /usr/lib
+                # 检测操作系统类型
+                if [ -f /etc/os-release ]; then
+                    # RedHat/CentOS 系统
+                    sudo yum install -y cmake gcc-c++ rabbitmq-c-devel openssl-devel
+                    # 从源码安装 gtest
+                    GTEST_DIR="/usr/local/src/gtest"
+                    sudo mkdir -p $GTEST_DIR
+                    sudo git clone https://github.com/google/googletest.git $GTEST_DIR
+                    cd $GTEST_DIR
+                    sudo cmake .
+                    sudo make
+                    sudo cp -r lib/*.a /usr/lib64/
+                    
+                elif [ -f /etc/debian_version ]; then
+                    # Debian/Ubuntu 系统
+                    sudo apt-get update
+                    sudo apt-get install -y cmake g++ librabbitmq-dev libssl-dev libgtest-dev
+                    # 编译安装 gtest
+                    cd /usr/src/gtest
+                    sudo cmake CMakeLists.txt
+                    sudo make
+                    sudo cp *.a /usr/lib
+                    
+                else
+                    echo "Error: Unsupported operating system"
+                    exit 1
+                fi
                 '''
             }
         }
