@@ -32,31 +32,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                # 识别系统
-                if grep -q 'openEuler' /etc/os-release; then
-                    echo "OpenEuler系统检测"
-                    # 尝试官方仓库安装
-                    if ! sudo yum install -y librabbitmq-devel; then
-                        echo "从源码编译安装..."
-                        sudo yum install -y git cmake gcc openssl-devel
-                        git clone https://github.com/alanxz/rabbitmq-c.git
-                        cd rabbitmq-c
-                        mkdir build && cd build
-                        cmake -DCMAKE_INSTALL_PREFIX=/usr ..
-                        make
-                        sudo make install
-                    fi
-                else
-                    echo "非OpenEuler系统，使用标准安装"
-                    sudo yum install -y rabbitmq-c-devel || sudo apt-get install -y librabbitmq-dev
-                fi
-                '''
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh '''
                 # 检测操作系统类型
                 if [ -f /etc/os-release ]; then
                     # RedHat/CentOS 系统
