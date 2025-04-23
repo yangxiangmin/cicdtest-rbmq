@@ -64,13 +64,24 @@ install(FILES include/rabbitmqclient.h
 )
 
 # 包含测试
+# 启用 CMake 的测试功能。CMake 本身并不直接运行测试，它通过其他工具（如 CTest）来管理测试。因此，调用 enable_testing() 后，CMake 会为项目启用相关的测试功能，使得你可以使用 CTest 进行测试的运行和管理。
 enable_testing()
+# 将 test/unit 目录添加到当前 CMake 项目的构建过程中，并在该目录下查找 CMakeLists.txt 文件。这样，test/unit 目录中的测试文件将作为子目录来构建。
 add_subdirectory(test/unit)
 add_subdirectory(test/integration)
 add_subdirectory(test/system)
 
 # 打包配置
-set(CPACK_GENERATOR "DEB")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Dev Team <dev@your-org.com>")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "librabbitmq4, libssl1.1")
+# 根据系统类型自动选择打包格式
+if(EXISTS "/etc/os-release")
+    set(CPACK_GENERATOR "RPM")
+    set(CPACK_PACKAGE_REQUIRES "rabbitmq-c >= 0.11.0, openssl >= 1.1.1")
+elseif(EXISTS "/etc/debian_version")
+    set(CPACK_GENERATOR "DEB")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "librabbitmq4 (>= 0.11.0), libssl1.1 (>= 1.1.1)")
+else()
+    message(WARNING "Unsupported packaging system")
+endif()
+
+# 自动创建系统标准的软件包
 include(CPack)

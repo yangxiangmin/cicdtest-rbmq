@@ -56,7 +56,8 @@ pipeline {
                         git clone https://github.com/alanxz/rabbitmq-c.git
                         cd rabbitmq-c
                         mkdir build && cd build
-                        cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+                        # cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+                        cmake ..
                         make
                         sudo make install
                     else
