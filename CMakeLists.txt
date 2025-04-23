@@ -3,6 +3,8 @@ project(RabbitMQWrapper)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# 如果不设置CMAKE_INSTALL_PREFIX（安装目录前缀），则缺省为：/usr/local/lib
+set(CMAKE_INSTALL_PREFIX "/opt/rabbitmq-test-yxm")
 
 # 设置版本信息
 configure_file(
@@ -18,7 +20,7 @@ find_package(OpenSSL REQUIRED)
 # find_package(RabbitMQ REQUIRED)
 # 替换 find_package(RabbitMQ REQUIRED)
 
-#set(RABBITMQ_INCLUDE_DIR "/usr/local/include")  # 根据实际安装路径调整
+set(RABBITMQ_INCLUDE_DIR "/usr/local/include")  # 根据实际安装路径调整
 set(RABBITMQ_LIBRARY "/usr/lib64/librabbitmq.so") # 或 .a 文件
 
 # 验证路径是否存在
@@ -47,7 +49,7 @@ add_library(rabbitmq_wrapper SHARED
 target_link_libraries(rabbitmq_wrapper
     ${CMAKE_THREAD_LIBS_INIT}
     ${OPENSSL_LIBRARIES}
-    rabbitmq
+    ${RABBITMQ_LIBRARY}
 )
 
 # 安装规则
