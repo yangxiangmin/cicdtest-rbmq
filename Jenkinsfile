@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'linux-amd64'
-    }
+    agent any
     
     environment {
         RABBITMQ_HOST = 'localhost'
