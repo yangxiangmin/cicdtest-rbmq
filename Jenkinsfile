@@ -50,7 +50,7 @@ pipeline {
                         echo "gtest 已经安装"
                     fi
 
-                    if [ ! -f /usr/lib/librabbitmq.a ] || [ ! -f /usr/lib/librabbitmq.so ]; then
+                    if ([ ! -f /usr/lib/librabbitmq.a ] && [ ! -f /usr/lib64/librabbitmq.a ]) || ([ ! -f /usr/lib/librabbitmq.so ] && [ ! -f /usr/lib64/librabbitmq.so ]); then
                         echo "从源码编译安装 rabbitmq..."
                         git clone https://github.com/alanxz/rabbitmq-c.git
                         cd rabbitmq-c
