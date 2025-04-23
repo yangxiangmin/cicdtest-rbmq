@@ -26,6 +26,7 @@ pipeline {
                 echo "#define BUILD_TIME \\"`date +"%Y-%m-%d %H:%M:%S"`\\"" >> include/version.h.in
                 echo "#define ARCH_TYPE \\"`uname -m`\\"" >> include/version.h.in
                 '''
+                echo "✅ 已完成代码检出！"
             }
         }
 
@@ -77,6 +78,7 @@ pipeline {
                     exit 1
                 fi
                 '''
+                echo "✅ 已完成依赖环境安装！"
             }
         }
         
@@ -88,6 +90,7 @@ pipeline {
                 cmake -DCMAKE_BUILD_TYPE=Release ..
                 make -j4
                 '''
+                echo "✅ 已完成编译！"
             }
         }
         
@@ -98,6 +101,7 @@ pipeline {
                 cd ${BUILD_DIR}
                 ctest --output-on-failure --no-compress-output -T Test
                 '''
+                echo "✅ 已完成单元测试！"
             }
             post {
                 always {
@@ -118,6 +122,7 @@ pipeline {
                 cd ${BUILD_DIR}
                 ./test/integration/integration_test_runner
                 '''
+                echo "✅ 已完成集成测试！"
             }
             post {
                 always {
@@ -138,6 +143,7 @@ pipeline {
                 cd ${BUILD_DIR}
                 ./test/system/system_test_runner
                 '''
+                echo "✅ 已完成系统测试！"
             }
             post {
                 always {
@@ -160,6 +166,7 @@ pipeline {
                 docker build -t rabbitmq-wrapper:${VERSION} .
                 docker save rabbitmq-wrapper:${VERSION} > ${ARTIFACT_DIR}/rabbitmq-wrapper-${VERSION}.tar
                 '''
+                echo "✅ 已完成打包！"
             }
             post {
                 success {
@@ -178,6 +185,7 @@ pipeline {
                 scp ${ARTIFACT_DIR}/*.deb staging-server:/tmp/
                 ssh staging-server "sudo dpkg -i /tmp/rabbitmq-wrapper-*.deb && sudo systemctl restart rabbitmq-wrapper"
                 '''
+                echo "✅ 已部署到预发布环境！"
             }
         }
         
@@ -192,6 +200,7 @@ pipeline {
                 scp ${ARTIFACT_DIR}/*.deb production-server:/tmp/
                 ssh production-server "sudo dpkg -i /tmp/rabbitmq-wrapper-*.deb && sudo systemctl restart rabbitmq-wrapper"
                 '''
+                echo "✅ 已部署到预生产环境！"
             }
         }
     }
