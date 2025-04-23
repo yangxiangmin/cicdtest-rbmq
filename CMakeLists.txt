@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(RabbitMQWrapper)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 设置版本信息
@@ -13,7 +13,22 @@ configure_file(
 # 查找依赖
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_package(RabbitMQ REQUIRED)
+
+# 安装了 rabbitmq-c，但未生成 CMake 配置文件RabbitMQConfig.cmake
+# find_package(RabbitMQ REQUIRED)
+# 替换 find_package(RabbitMQ REQUIRED)
+
+#set(RABBITMQ_INCLUDE_DIR "/usr/local/include")  # 根据实际安装路径调整
+set(RABBITMQ_LIBRARY "/usr/lib64/librabbitmq.so") # 或 .a 文件
+
+# 验证路径是否存在
+# if(NOT EXISTS ${RABBITMQ_INCLUDE_DIR}/amqp.h)
+#     message(FATAL_ERROR "RabbitMQ headers not found in ${RABBITMQ_INCLUDE_DIR}")
+# endif()
+
+if(NOT EXISTS ${RABBITMQ_LIBRARY})
+    message(FATAL_ERROR "RabbitMQ library not found at ${RABBITMQ_LIBRARY}")
+endif()
 
 # 包含目录
 include_directories(
