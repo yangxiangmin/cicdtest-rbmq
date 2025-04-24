@@ -105,22 +105,20 @@ pipeline {
                 echo "✅ 已完成单元测试！"
             }
         }
- /*       
+ 
         stage('Integration Test') {
             steps {
                 sh '''
-                # 启动测试RabbitMQ服务器
-                docker run -d --name rabbitmq-test -p 5672:5672 rabbitmq:3-management
-                sleep 30 # 等待RabbitMQ启动
-                
-                # 运行集成测试
                 cd ${BUILD_DIR}
-                ./test/integration/integration_test_runner
+                ./test/integration/integration_test_runner --gtest_output="xml:${WORKSPACE}/${BUILD_DIR}/test-results.xml"
+                ls -l "${WORKSPACE}/${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
                 '''
-                echo "✅ 已完成集成测试！"
+                junit "${BUILD_DIR}/test-results.xml"
+                echo "✅ 已完成单元测试！"
             }
         }
 
+/*
         stage('System Test') {
             steps {
                 sh '''
