@@ -90,8 +90,6 @@ pipeline {
                 cd ${BUILD_DIR}
                 cmake -DCMAKE_BUILD_TYPE=Release ..
                 make -j4
-                cd ${BUILD_DIR}
-                ls -lR  # 递归列出所有文件
                 '''
                 echo "✅ 已完成编译！"
             }
@@ -111,8 +109,9 @@ pipeline {
             steps {
                 sh '''
                 cd ${BUILD_DIR}
-                ./test/unit/test_rabbitmq_wrapper --gtest_output="xml:${WORKSPACE}/${BUILD_DIR}/test/unit/test-results.xml"
-                ls -l "${WORKSPACE}/${BUILD_DIR}/test/unit/test-results.xml" || echo "❌ 报告生成失败"
+                // ls -lR  # 递归列出所有文件
+                ./test/unit/test_rabbitmq_wrapper --gtest_output="xml:${BUILD_DIR}/test/unit/test-results.xml"
+                ls -l "${BUILD_DIR}/test/unit/test-results.xml" || echo "❌ 报告生成失败"
                 '''
                 junit "${BUILD_DIR}/test/unit/test-results.xml"
                 echo "✅ 已完成测试！"
