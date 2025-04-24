@@ -36,7 +36,7 @@ pipeline {
                 # 检测操作系统类型
                 if [ -f /etc/os-release ]; then
                     # RedHat/CentOS 系统
-                    sudo yum install -y cmake gcc-c++ openssl-devel libcurl-devel libjsoncpp-dev
+                    sudo yum install -y cmake gcc-c++ openssl-devel libcurl-devel jsoncpp-devel
 
                     if [ ! -f /usr/local/lib/libgtest.a ] && [ ! -f /usr/local/lib64/libgtest.a ]; then
                         echo "从源码编译安装 gtest..."
