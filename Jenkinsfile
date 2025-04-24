@@ -113,8 +113,8 @@ pipeline {
                 echo "BUILD_DIR: ${BUILD_DIR}"
                 ls -l "${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
                 cat "${BUILD_DIR}/test-results.xml"  # 检查 XML 内容是否有效
+                chmod 644 ${BUILD_DIR}/test-results.xml
                 '''
-                sleep(5)  // 等待 5 秒
                 junit "${BUILD_DIR}/test-results.xml"
                 echo "✅ 已完成测试！"
             }
