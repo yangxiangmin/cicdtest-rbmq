@@ -111,7 +111,7 @@ pipeline {
             steps {
                 sh '''
                 cd ${BUILD_DIR}
-                ./tests/test_rabbitmq_wrapper --gtest_output="xml:${WORKSPACE}/${BUILD_DIR}/test-results.xml"
+                ./test/test_rabbitmq_wrapper --gtest_output="xml:${WORKSPACE}/${BUILD_DIR}/test-results.xml"
                 ls -l "${WORKSPACE}/${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
                 '''
                 junit "${BUILD_DIR}/test-results.xml"
