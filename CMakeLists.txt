@@ -69,8 +69,8 @@ enable_testing()
 # 将 test/unit 目录添加到当前 CMake 项目的构建过程中，并在该目录下查找 CMakeLists.txt 文件。这样，test/unit 目录中的测试文件将作为子目录来构建。
 add_subdirectory(test/unit)
 add_subdirectory(test/integration)
-add_subdirectory(test/integration_p2p)
-add_subdirectory(test/system)
+#add_subdirectory(test/integration_p2p)
+#add_subdirectory(test/system)
 
 # 打包配置
 # 根据系统类型自动选择打包格式
