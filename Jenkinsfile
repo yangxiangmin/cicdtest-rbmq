@@ -7,7 +7,7 @@ pipeline {
         RABBITMQ_USER = 'guest'
         RABBITMQ_PASS = 'guest'
         BUILD_DIR = "build"
-        ARTIFACT_DIR = "artifacts"
+        ARTIFACTS_DIR = "artifacts"
         VERSION = sh(script: 'git describe --tags --always', returnStdout: true).trim()
     }
     
