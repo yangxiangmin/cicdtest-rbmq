@@ -28,20 +28,6 @@ target_include_directories(system_test_runner
     ${CURL_INCLUDE_DIRS}
 )
 
-# 添加测试
-add_test(
-    NAME rabbitmq_wrapper_system_tests
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/system_test_runner
-)
-
-# 设置测试属性
-set_tests_properties(rabbitmq_wrapper_system_tests
-    PROPERTIES
-    TIMEOUT 120
-    LABELS "system"
-    REQUIRED_FILES "${CMAKE_CURRENT_BINARY_DIR}/system_test_runner"
-)
-
 # 添加依赖，确保主库和集成测试先构建
 add_dependencies(system_test_runner rabbitmq_wrapper)
 

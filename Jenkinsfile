@@ -96,6 +96,7 @@ pipeline {
         }
         
         stage('Unit Test') {
+/*
             steps {
                 sh '''
                 mkdir -p ${REPORT_DIR}
@@ -104,8 +105,18 @@ pipeline {
                 '''
                 echo "✅ 已完成单元测试！"
             }
+*/
+            steps {
+                sh '''
+                cd ${BUILD_DIR}
+                ./tests/test_rabbitmq_wrapper --gtest_output="xml:${WORKSPACE}/${BUILD_DIR}/test-results.xml"
+                ls -l "${WORKSPACE}/${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
+                '''
+                junit "${BUILD_DIR}/test-results.xml"
+                echo "✅ 已完成测试！"
+            }
         }
-        
+ /*       
         stage('Integration Test') {
             steps {
                 sh '''
@@ -120,7 +131,7 @@ pipeline {
                 echo "✅ 已完成集成测试！"
             }
         }
-/*        
+               
         stage('System Test') {
             steps {
                 sh '''

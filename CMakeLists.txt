@@ -71,18 +71,3 @@ add_subdirectory(test/unit)
 add_subdirectory(test/integration)
 #add_subdirectory(test/integration_p2p)
 #add_subdirectory(test/system)
-
-# 打包配置
-# 根据系统类型自动选择打包格式
-if(EXISTS "/etc/os-release")
-    set(CPACK_GENERATOR "RPM")
-    set(CPACK_PACKAGE_REQUIRES "rabbitmq-c >= 0.11.0, openssl >= 1.1.1")
-elseif(EXISTS "/etc/debian_version")
-    set(CPACK_GENERATOR "DEB")
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS "librabbitmq4 (>= 0.11.0), libssl1.1 (>= 1.1.1)")
-else()
-    message(WARNING "Unsupported packaging system")
-endif()
-
-# 自动创建系统标准的软件包
-include(CPack)
