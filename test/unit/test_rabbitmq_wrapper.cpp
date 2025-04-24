@@ -18,9 +18,9 @@ protected:
 };
 
 TEST_F(RabbitMQWrapperTest, Initialization) {
+    EXPECT_EQ(wrapper->GetInstanceType(), p2ptype);
     EXPECT_EQ(wrapper->GetModuleName(), "test_module");
     EXPECT_EQ(wrapper->GetExchangeName(), RBMQ_P2P_EXCHG);
-    EXPECT_EQ(wrapper->GetInstanceType(), p2ptype);
 }
 
 TEST_F(RabbitMQWrapperTest, PropertyConversion) {
