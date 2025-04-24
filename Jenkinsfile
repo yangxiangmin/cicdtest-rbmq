@@ -90,6 +90,8 @@ pipeline {
                 cd ${BUILD_DIR}
                 cmake -DCMAKE_BUILD_TYPE=Release ..
                 make -j4
+                cd ${BUILD_DIR}
+                ls -lR  # 递归列出所有文件
                 '''
                 echo "✅ 已完成编译！"
             }
@@ -131,7 +133,7 @@ pipeline {
                 echo "✅ 已完成集成测试！"
             }
         }
-               
+
         stage('System Test') {
             steps {
                 sh '''
