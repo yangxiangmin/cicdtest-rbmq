@@ -133,52 +133,78 @@ pipeline {
                 echo "✅ 已完成系统测试！"
             }
         }
- */       
-        stage('Package') {
+ */
+         stage('Package') {
             steps {
                 sh '''
-                mkdir -p ${ARTIFACT_DIR}
-                # 创建Debian包
-                cd ${BUILD_DIR}
-                cpack -G DEB
-                cp *.deb ${ARTIFACT_DIR}
-                
-                # 创建Docker镜像
-                docker build -t rabbitmq-wrapper:${VERSION} .
-                docker save rabbitmq-wrapper:${VERSION} > ${ARTIFACT_DIR}/rabbitmq-wrapper-${VERSION}.tar
+                mkdir -p ${ARTIFACTS_DIR}
+                cp ${BUILD_DIR}/*.so ${ARTIFACTS_DIR}/
+                tar -czvf rabbitmq_ops-$(date +%Y%m%d).tar.gz ${ARTIFACTS_DIR}
                 '''
+                archiveArtifacts artifacts: '*.tar.gz'
                 echo "✅ 已完成打包！"
             }
         }
-        
-        stage('Deploy to Staging') {
-            when {
-                branch 'main'
-            }
+
+        stage('Deploy-Test') {
+            // when { branch 'main' }
             steps {
-                sh '''
-                # 部署到测试环境
-                scp ${ARTIFACT_DIR}/*.deb staging-server:/tmp/
-                ssh staging-server "sudo dpkg -i /tmp/rabbitmq-wrapper-*.deb && sudo systemctl restart rabbitmq-wrapper"
-                '''
+                sh 'echo "当前分支是：$(git rev-parse --abbrev-ref HEAD)"'
+                sshPublisher(
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: 'testenv', 
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: 'rabbitmq_ops-*.tar.gz',
+                                    removePrefix: '',
+                                    remoteDirectory: '/opt/rabbitmq_ops',
+                                    execCommand: '''
+                                        cd /opt/rabbitmq && \
+                                        tar -xzvf rabbitmq-*.tar.gz && \
+                                        rm -f rabbitmq-*.tar.gz
+                                    '''
+                                )
+                            ],
+                            usePromotionTimestamp: false,
+                            useWorkspaceInPromotion: false,
+                            verbose: true
+                        )
+                    ]
+                )
                 echo "✅ 已部署到预发布环境！"
             }
         }
-        
-        stage('Deploy to Production') {
-            when {
-                branch 'release/*'
-            }
+
+        stage('Deploy-Pro') {
+            // when { branch 'main' }
             steps {
-                input message: 'Deploy to production?', ok: 'Deploy'
-                sh '''
-                # 部署到生产环境
-                scp ${ARTIFACT_DIR}/*.deb production-server:/tmp/
-                ssh production-server "sudo dpkg -i /tmp/rabbitmq-wrapper-*.deb && sudo systemctl restart rabbitmq-wrapper"
-                '''
-                echo "✅ 已部署到预生产环境！"
+                sh 'echo "当前分支是：$(git rev-parse --abbrev-ref HEAD)"'
+                sshPublisher(
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: 'proenv', 
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: 'rabbitmq-*.tar.gz',
+                                    removePrefix: '',
+                                    remoteDirectory: '/opt/rabbitmq',
+                                    execCommand: '''
+                                        cd /opt/rabbitmq && \
+                                        tar -xzvf rabbitmq-*.tar.gz && \
+                                        rm -f rabbitmq-*.tar.gz
+                                    '''
+                                )
+                            ],
+                            usePromotionTimestamp: false,
+                            useWorkspaceInPromotion: false,
+                            verbose: true
+                        )
+                    ]
+                )
+                echo "✅ 已部署到生产环境！"
             }
-        }
+        }       
     }
     
     post {
