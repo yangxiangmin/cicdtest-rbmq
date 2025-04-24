@@ -1,9 +1,10 @@
 # 系统测试配置
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 
 # 查找 Google Test 和 CURL
 find_package(GTest REQUIRED)
 find_package(CURL REQUIRED)
+find_package(Jsoncpp REQUIRED)
 
 # 创建系统测试可执行文件
 add_executable(system_test_runner 
@@ -16,7 +17,8 @@ target_link_libraries(system_test_runner
     rabbitmq_wrapper
     GTest::GTest
     GTest::Main
-    ${CURL_LIBRARIES}
+    CURL::libcurl       # 替换 ${CURL_LIBRARIES}
+    JsonCpp::JsonCpp
     pthread
 )
 

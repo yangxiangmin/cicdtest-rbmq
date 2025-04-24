@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <curl/curl.h>
-//#include <json/json.h>
+#include <json/json.h>
 #include <thread>
 #include "rabbitmqclient.h"
 
