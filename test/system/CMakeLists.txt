@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.12)
 # 查找 Google Test 和 CURL
 find_package(GTest REQUIRED)
 find_package(CURL REQUIRED)
-find_package(Jsoncpp REQUIRED)
+find_package(jsoncpp REQUIRED)
 
 # 创建系统测试可执行文件
 add_executable(system_test_runner 
