@@ -160,7 +160,7 @@ pipeline {
                                     removePrefix: '',
                                     remoteDirectory: '/opt/rabbitmq_ops',
                                     execCommand: '''
-                                        cd /opt/rabbitmq && \
+                                        cd /opt/rabbitmq_ops && \
                                         tar -xzvf rabbitmq-*.tar.gz && \
                                         rm -f rabbitmq-*.tar.gz
                                     '''
@@ -190,7 +190,7 @@ pipeline {
                                     removePrefix: '',
                                     remoteDirectory: '/opt/rabbitmq_ops',
                                     execCommand: '''
-                                        cd /opt/rabbitmq && \
+                                        cd /opt/rabbitmq_ops && \
                                         tar -xzvf rabbitmq-*.tar.gz && \
                                         rm -f rabbitmq-*.tar.gz
                                     '''
