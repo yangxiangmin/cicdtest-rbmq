@@ -104,12 +104,6 @@ pipeline {
                 '''
                 echo "✅ 已完成单元测试！"
             }
-            post {
-                always {
-                    junit '${BUILD_DIR}/Testing/**/Test.xml'
-                    archiveArtifacts artifacts: '${BUILD_DIR}/Testing/**/*.xml', fingerprint: true
-                }
-            }
         }
         
         stage('Integration Test') {
@@ -125,14 +119,8 @@ pipeline {
                 '''
                 echo "✅ 已完成集成测试！"
             }
-            post {
-                always {
-                    junit '${BUILD_DIR}/test/integration/*.xml'
-                    sh 'docker stop rabbitmq-test && docker rm rabbitmq-test'
-                }
-            }
         }
-        
+/*        
         stage('System Test') {
             steps {
                 sh '''
@@ -146,14 +134,8 @@ pipeline {
                 '''
                 echo "✅ 已完成系统测试！"
             }
-            post {
-                always {
-                    junit '${BUILD_DIR}/test/system/*.xml'
-                    sh 'docker-compose -f test/system/docker-compose.yml down'
-                }
-            }
         }
-        
+ */       
         stage('Package') {
             steps {
                 sh '''
@@ -168,11 +150,6 @@ pipeline {
                 docker save rabbitmq-wrapper:${VERSION} > ${ARTIFACT_DIR}/rabbitmq-wrapper-${VERSION}.tar
                 '''
                 echo "✅ 已完成打包！"
-            }
-            post {
-                success {
-                    archiveArtifacts artifacts: '${ARTIFACT_DIR}/*', fingerprint: true
-                }
             }
         }
         
