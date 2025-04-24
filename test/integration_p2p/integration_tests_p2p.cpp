@@ -18,8 +18,6 @@ void ReportEventHandler(
 }
 
 TEST(RabbitMQIntegrationTest, P2PMessageExchange) {
-    int rslt = rmInitMidwareClient("mod_p2ptest", "localhost", 5672, "guest", "guest", false);
-    std::cout << "rmInitMidwareClient return: " << rslt << std::endl;
 
     MID_CLIENT_HANDLER stClientCBHandle = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
@@ -27,6 +25,9 @@ TEST(RabbitMQIntegrationTest, P2PMessageExchange) {
     
     rmSetMidMsgHandler(&stClientCBHandle);
 
+    int rslt = rmInitMidwareClient("mod_p2ptest", "localhost", 5672, "guest", "guest", false);
+    std::cout << "rmInitMidwareClient return: " << rslt << std::endl;
+    
     rslt = rmReportMake("mod_p2ptest", "p2p-report-msg", "message body");
     std::cout << "rmReportMake return: " << rslt << std::endl;
 
