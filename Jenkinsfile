@@ -110,6 +110,7 @@ pipeline {
                 sh '''
                 cd ${BUILD_DIR}
                 ./test/unit/test_rabbitmq_wrapper --gtest_output="xml:${BUILD_DIR}/test-results.xml"
+                echo "BUILD_DIR: ${BUILD_DIR}"
                 ls -l "${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
                 cat "${BUILD_DIR}/test-results.xml"  # 检查 XML 内容是否有效
                 '''
