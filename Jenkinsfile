@@ -161,8 +161,8 @@ pipeline {
                                     remoteDirectory: '/opt/rabbitmq_ops',
                                     execCommand: '''
                                         cd /opt/rabbitmq_ops && \
-                                        tar -xzvf rabbitmq-*.tar.gz && \
-                                        rm -f rabbitmq-*.tar.gz
+                                        tar -xzvf rabbitmq_ops-*.tar.gz && \
+                                        rm -f rabbitmq_ops-*.tar.gz
                                     '''
                                 )
                             ],
@@ -186,13 +186,13 @@ pipeline {
                             configName: 'proenv', 
                             transfers: [
                                 sshTransfer(
-                                    sourceFiles: 'rabbitmq-*.tar.gz',
+                                    sourceFiles: 'rabbitmq_ops-*.tar.gz',
                                     removePrefix: '',
                                     remoteDirectory: '/opt/rabbitmq_ops',
                                     execCommand: '''
                                         cd /opt/rabbitmq_ops && \
-                                        tar -xzvf rabbitmq-*.tar.gz && \
-                                        rm -f rabbitmq-*.tar.gz
+                                        tar -xzvf rabbitmq_ops-*.tar.gz && \
+                                        rm -f rabbitmq_ops-*.tar.gz
                                     '''
                                 )
                             ],
