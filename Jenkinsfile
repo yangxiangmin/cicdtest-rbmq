@@ -114,7 +114,7 @@ pipeline {
                 ls -l "${WORKSPACE}/${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
                 '''
                 junit "${BUILD_DIR}/test-results.xml"
-                echo "✅ 已完成单元测试！"
+                echo "✅ 已完成集成测试！"
             }
         }
 
