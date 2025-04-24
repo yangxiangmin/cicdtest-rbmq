@@ -7,7 +7,9 @@ class RabbitMQWrapperTest : public ::testing::Test {
 protected:
     void SetUp() override {
         wrapper = &RabbitMQWrapper::getInstance(p2ptype);
-        wrapper->rabbitmq_init("localhost", 5672, "guest", "guest", "test_module");
+        bool initResult = wrapper->rabbitmq_init("localhost", 5672, "guest", "guest", "test_module");
+        ASSERT_TRUE(initResult) << "rabbitmq_init failed!";
+        std::cout << "ExchangeName: " << wrapper->GetExchangeName() << std::endl;
     }
     
     void TearDown() override {
