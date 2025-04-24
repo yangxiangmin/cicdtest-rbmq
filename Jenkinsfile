@@ -109,7 +109,6 @@ pipeline {
             steps {
                 sh '''
                 cd ${BUILD_DIR}
-                // ls -lR  # 递归列出所有文件
                 ./test/unit/test_rabbitmq_wrapper --gtest_output="xml:${BUILD_DIR}/test/unit/test-results.xml"
                 ls -l "${BUILD_DIR}/test/unit/test-results.xml" || echo "❌ 报告生成失败"
                 '''
