@@ -6,9 +6,8 @@ pipeline {
         RABBITMQ_PORT = '5672'
         RABBITMQ_USER = 'guest'
         RABBITMQ_PASS = 'guest'
-        BUILD_DIR = "${WORKSPACE}/build"
-        REPORT_DIR = "${WORKSPACE}/reports"
-        ARTIFACT_DIR = "${WORKSPACE}/artifacts"
+        BUILD_DIR = "build"
+        ARTIFACT_DIR = "artifacts"
         VERSION = sh(script: 'git describe --tags --always', returnStdout: true).trim()
     }
     
@@ -99,8 +98,8 @@ pipeline {
             steps {
                 sh '''
                 cd ${BUILD_DIR}
-                ./test/unit/test_rabbitmq_wrapper --gtest_output="xml:${BUILD_DIR}/test-results.xml"
-                ls -l "${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
+                ./test/unit/test_rabbitmq_wrapper --gtest_output="xml:${WORKSPACE}/${BUILD_DIR}/test-results.xml"
+                ls -l "${WORKSPACE}/${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
                 '''
                 junit "${BUILD_DIR}/test-results.xml"
                 echo "✅ 已完成单元测试！"
