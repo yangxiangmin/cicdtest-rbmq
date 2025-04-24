@@ -188,7 +188,7 @@ pipeline {
                                 sshTransfer(
                                     sourceFiles: 'rabbitmq-*.tar.gz',
                                     removePrefix: '',
-                                    remoteDirectory: '/opt/rabbitmq',
+                                    remoteDirectory: '/opt/rabbitmq_ops',
                                     execCommand: '''
                                         cd /opt/rabbitmq && \
                                         tar -xzvf rabbitmq-*.tar.gz && \
