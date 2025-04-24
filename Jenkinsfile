@@ -96,16 +96,6 @@ pipeline {
         }
         
         stage('Unit Test') {
-/*
-            steps {
-                sh '''
-                mkdir -p ${REPORT_DIR}
-                cd ${BUILD_DIR}
-                ctest --output-on-failure --no-compress-output -T Test
-                '''
-                echo "✅ 已完成单元测试！"
-            }
-*/
             steps {
                 sh '''
                 cd ${BUILD_DIR}
@@ -113,7 +103,7 @@ pipeline {
                 ls -l "${BUILD_DIR}/test-results.xml" || echo "❌ 报告生成失败"
                 '''
                 junit "${BUILD_DIR}/test-results.xml"
-                echo "✅ 已完成测试！"
+                echo "✅ 已完成单元测试！"
             }
         }
  /*       
