@@ -12,6 +12,8 @@ void ReportEventHandler(
 {
     if (msgName == "p2p-report-msg") {
         report_received = true;
+    } else {
+        std::cout << "enter ReportEventHandler,but message err: " << msgName << std::endl;
     }
 }
 
