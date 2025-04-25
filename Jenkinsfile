@@ -214,12 +214,12 @@ pipeline {
         failure {
             emailext body: '${DEFAULT_CONTENT}\n\n${BUILD_URL}', 
                     subject: 'FAILED: Job ${JOB_NAME} - Build ${BUILD_NUMBER}', 
-                    to: 'dev-team@your-org.com'
+                    to: 'yang.xiangmin@ghtchina.com'
         }
         success {
             emailext body: '${DEFAULT_CONTENT}\n\n${BUILD_URL}', 
                     subject: 'SUCCESS: Job ${JOB_NAME} - Build ${BUILD_NUMBER}', 
-                    to: 'dev-team@your-org.com'
+                    to: 'yang.xiangmin@ghtchina.com'
         }
     }
 }
